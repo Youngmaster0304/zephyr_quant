@@ -36,6 +36,19 @@ st.markdown("""
         opacity: 1 !important;
         transition: none !important;
     }
+    /* Disable all transitions for smooth updates */
+    * {
+        transition: none !important;
+        animation: none !important;
+    }
+    /* Keep charts stable */
+    .plotly-graph-div {
+        transition: none !important;
+    }
+    /* Prevent data flickering */
+    [data-testid="dataFrameContainer"] {
+        transition: none !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -121,7 +134,7 @@ if st.session_state.auto_loop and (streamer.best_bid.get("btcusdt") is None or s
 # Layout
 st.title("Live Market Simulator")
 
-@st.fragment(run_every=1)
+@st.fragment(run_every=6)
 def update_dashboard():
     # Show active halts exactly ONCE per UI update to prevent spam
     for asset, sym in [("btc", "btcusdt"), ("eth", "ethusdt")]:
@@ -137,7 +150,7 @@ def update_dashboard():
 
     # 1. Trading Loop Logic
     if st.session_state.auto_loop:
-        for _ in range(5):
+        for _ in range(8):
             if not st.session_state.auto_loop:
                 break
                 
